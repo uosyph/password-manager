@@ -2,6 +2,8 @@ from sys import argv, exit
 import csv
 import argparse
 import cryptography
+import secrets
+import string
 
 
 class Color:
@@ -19,7 +21,7 @@ class Color:
 class Message:
     help = (
         f'usage: {argv[0]} <options> [info]\n'
-        + '-h, --help                                   Print Help Message and Exit'
+        + '-h, --help                                   Print Help Message and Exit\n'
         + '-n, --new [name email password]              Save New Password\n'
         + '-e, --edit [name email password]             Edit Existing Password\n'
         + '-d, --delete [name]                          Delete a Password\n'
@@ -35,6 +37,10 @@ filename = 'vault.csv'
 
 
 def main():
+    get_arg()
+
+
+def get_arg():
     try:
         match argv[1]:
             case '-n' | '--new':
@@ -48,7 +54,7 @@ def main():
             case '-l' | '--list':
                 listPW()
             case '-g' | '--generate':
-                genPW(argv[2], argv[3], argv[4])
+                genPW(int(argv[2]), argv[3], argv[4])
             case '-h' | '--help':
                 exit(Message.help)
             case _:
@@ -60,8 +66,8 @@ def main():
 def run():
     while True:
         try:
-            opr = input(Message.options)
-            match opr:
+            option = input(Message.options)
+            match option:
                 case 'n' | 'new':
                     newPW(input('Name: '), input('Email: '), input('Password: '))
                 case 'e' | 'edit':
@@ -74,7 +80,7 @@ def run():
                     listPW()
                 case 'g' | 'generate':
                     genPW(
-                        input('Chars: '),
+                        int(input('Password Length: ')),
                         input('Lowercase: l, Uppercase: u, RandomCase: r\n: '),
                         input('Include Symbols y/n: '),
                     )
@@ -83,6 +89,9 @@ def run():
                     pass
         except (EOFError, KeyboardInterrupt):
             exit()
+        except ValueError:
+            print('Wrong Value')
+            pass
 
 
 def newPW(name, email, password):
@@ -90,8 +99,9 @@ def newPW(name, email, password):
         writer = csv.writer(file)
         try:
             writer.writerow([name, email, password])
+            print(f'{Color.OKGREEN}Password Saved Successfully{Color.ENDC}')
         except csv.Error as e:
-            exit('file {}, line {}: {}'.format(filename, writer.line_num, e))
+            exit('file {}, line {}: {}'.format(filename, writer, e))
         except (EOFError, KeyboardInterrupt):
             exit()
 
@@ -117,7 +127,9 @@ def editPW(name, email, password):
 
 
 def delPW(name):
-    with open(filename, newline='') as inFile, open(filename, 'a', newline='') as outFile:
+    with open(filename, newline='') as inFile, open(
+        filename, 'a', newline=''
+    ) as outFile:
         reader = csv.reader(inFile)
         writer = csv.writer(outFile)
         for row in reader:
@@ -146,8 +158,44 @@ def listPW():
             )
 
 
-def genPW(charsNum, case, useSymbol):
-    ...
+def genPW(pwLen=None, case=None, useSymbol=None):
+    letters = string.ascii_letters
+    upper_letters = string.ascii_uppercase
+    lower_letters = string.ascii_lowercase
+    digits = string.digits
+    special_chars = string.punctuation
+
+    alpha = ''
+    pwd = ''
+
+    # use argparser
+
+    match case:
+        case '-u' | '--uppercase':
+            alpha = upper_letters + digits + special_chars
+        case '-l' | '--lowercase':
+            alpha = lower_letters + digits + special_chars
+        case _:
+            alpha = letters + digits + special_chars
+
+    match useSymbol:
+        case '-s' | '--symbols':
+            alpha = letters + digits
+        case _:
+            alpha = letters + digits + special_chars
+
+
+    
+    if pwLen == None:
+        pwd_length = 16
+    else:
+        pwd_length = pwLen
+
+
+    for i in range(pwd_length):
+        pwd += ''.join(secrets.choice(alpha))
+
+    print(pwd)
 
 
 if __name__ == '__main__':
