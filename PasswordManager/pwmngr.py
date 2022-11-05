@@ -59,10 +59,11 @@ def main():
 
 
 def check_file():
-    if not os.path.exists(path):
+    if not os.path.exists(filepath):
         with open(filename, 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(['name', 'email', 'password'])
+            print('created file')
 
 
 # Get user input from command line arguments
@@ -229,6 +230,7 @@ def findPW(name):
 def listPW():
     with open(filename, newline='') as file:
         reader = csv.reader(file)
+        next(file)
         for row in reader:
             print(
                 f'{Color.BOLD}Name: {Color.ENDC}{Color.OKBLUE}{row[0]}{Color.ENDC}\t{Color.BOLD}Email: {Color.ENDC}{Color.OKBLUE}{row[1]}\t{Color.ENDC}{Color.BOLD}Password: {Color.ENDC}{Color.OKBLUE}{row[2]}{Color.ENDC}',
