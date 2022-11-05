@@ -48,30 +48,35 @@ class Message:
     )
 
 
+path = './'
 filename = 'vault.csv'
+filepath = path + filename
 
 
 def main():
-    # add func for this / is doesn't exist create it and save first fow as name,email,password
-    path = './' + filename
-    isExist = os.path.exists(path)
-    print(isExist)
+    check_file()
+    get_arg()
 
-    # get_arg()
+
+def check_file():
+    if not os.path.exists(path):
+        with open(filename, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['name', 'email', 'password'])
 
 
 # Get user input from command line arguments
 def get_arg():
     try:
-        match argv[1]:
+        match argv[1].lower():
             case '-n' | '--new':
-                newPW(argv[2], argv[3], argv[4])
+                newPW(argv[2].lower(), argv[3].lower(), argv[4])
             case '-e' | '--edit':
-                editPW(argv[2], argv[3], argv[4])
+                editPW(argv[2].lower(), argv[3].lower(), argv[4])
             case '-d' | '--delete':
-                delPW(argv[2])
+                delPW(argv[2].lower())
             case '-f' | '--find':
-                findPW(argv[2])
+                findPW(argv[2].lower())
             case '-l' | '--list':
                 listPW()
             case '-g' | '--generate':
@@ -83,7 +88,7 @@ def get_arg():
                     if argv[2] != None and int(argv[2]) > 0:
                         pwLen = argv[2]
 
-                    match argv[3]:
+                    match argv[3].lower():
                         case '-u' | '--uppercase':
                             case = 'u'
                         case '-l' | '--lowercase':
@@ -91,7 +96,7 @@ def get_arg():
                         case _:
                             case = 'r'
 
-                    match argv[4]:
+                    match argv[4].lower():
                         case '-s' | '--no-symbols':
                             useSymbols = 'n'
                         case _:
@@ -112,16 +117,24 @@ def get_arg():
 def run():
     while True:
         try:
-            option = input(Message.options)
+            option = input(Message.options).lower()
             match option:
                 case 'n' | 'new':
-                    newPW(input('Name: '), input('Email: '), input('Password: '))
+                    newPW(
+                        input('Name: ').lower(),
+                        input('Email: ').lower(),
+                        input('Password: '),
+                    )
                 case 'e' | 'edit':
-                    editPW(input('Name: '), input('Email: '), input('Password: '))
+                    editPW(
+                        input('Name: ').lower(),
+                        input('Email: ').lower(),
+                        input('Password: '),
+                    )
                 case 'd' | 'delete':
-                    delPW(input('Name: '))
+                    delPW(input('Name: ').lower())
                 case 'f' | 'find':
-                    findPW(input('Name: '))
+                    findPW(input('Name: ').lower())
                 case 'l' | 'list':
                     listPW()
                 case 'g' | 'generate':
@@ -131,11 +144,11 @@ def run():
 
                             case = input(
                                 'Lowercase: l, Uppercase: u, RandomCase: r\n: '
-                            )
+                            ).lower()
                             if case not in ['l', 'u', 'r']:
                                 raise ValueError
 
-                            use_symbols = input('Include Symbols y/n: ')
+                            use_symbols = input('Include Symbols y/n: ').lower()
                             if use_symbols not in ['y', 'n']:
                                 raise ValueError
 
@@ -163,11 +176,9 @@ def newPW(name, email, password):
         writer = csv.writer(file)
         try:
             writer.writerow([name, email, password])
-            print(f'{Color.OKGREEN}Password Saved Successfully{Color.ENDC}')
+            print(f'{Color.OKGREEN}Password Saved Successfully{Color.ENDC}\n')
         except csv.Error as e:
             exit('file {}, line {}: {}'.format(filename, writer, e))
-        except (EOFError, KeyboardInterrupt):
-            exit()
 
 
 # Edit a password in the vault using the name associated with it
@@ -177,7 +188,6 @@ def editPW(name, email, password):
         writer = csv.writer(wFile)
         try:
             for row in reader:
-
                 if row[0] == name:
                     row[1] = row[1].replace(row[1], email)
                     row[2] = row[2].replace(row[2], password)
@@ -187,11 +197,8 @@ def editPW(name, email, password):
                     file.to_csv(filename, index=False)
 
                     writer.writerow(row)
-
         except csv.Error as e:
             exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
-        except (EOFError, KeyboardInterrupt):
-            exit()
 
 
 # Delete a password in the vault using the name associated with it
