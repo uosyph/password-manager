@@ -1,48 +1,50 @@
 from sys import argv, exit
+import os
 import csv
-import argparse
+import pandas as pd
 import cryptography
 import secrets
 import string
 
 
-# Add a proper way to exit the app
-# Check if args when using -g flag either by using argparse or if cond
-# Fix exit and delete funcs
+# Fix delete funcs
+# Add password encryption
+# Add successful messages
 
 
 class Color:
     HEADER = '\033[95m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
     OKBLUE = '\033[94m'
     OKCYAN = '\033[96m'
     OKGREEN = '\033[92m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
 
 
 class Message:
     help = (
         f'Usage: {argv[0]} [option] <info>\n\n'
         + '-h, --help                                   Print Help Message and Exit\n'
-        + '-n, --new     <name email password>          Save New Password\n'
-        + '-e, --edit    <name email password>          Edit Existing Password\n'
-        + '-d, --delete  <name>                         Delete a Password\n'
-        + '-f, --find    <name>                         Find a Password\n'
+        + '-n, --new       <name email password>        Save New Password\n'
+        + '-e, --edit      <name email password>        Edit Existing Password\n'
+        + '-d, --delete    <name>                       Delete a Password\n'
+        + '-f, --find      <name>                       Find a Password\n'
         + '-l, --list                                   List All Passwords\n'
-        + '-g, --generate *[<number>, [-l, -u], -s]     Generate Random Password\n\n'
+        + '-g, --generate  <number>, [-l, -u, -r], -s   Generate Random Password\n\n'
         + 'Or leave empty to enter The App'
     )
 
     options = (
-        'Save New Password: [n, new]\n'
-        + 'Edit Existing Password: [e, edit]\n'
-        + 'Delete a Password: [d, delete]\n'
-        + 'Find a Password: [f, find]\n'
-        + 'List All Password: [l, list]\n'
-        + 'Generate Random Password: [g, generate]\n: '
+        'Save New Password:          [n, new]\n'
+        + 'Edit Existing Password:     [e, edit]\n'
+        + 'Delete a Password:          [d, delete]\n'
+        + 'Find a Password:            [f, find]\n'
+        + 'List All Password:          [l, list]\n'
+        + 'Generate Random Password:   [g, generate]\n'
+        + 'Quit The App:               [q, quit]\n: '
     )
 
 
@@ -50,7 +52,12 @@ filename = 'vault.csv'
 
 
 def main():
-    get_arg()
+    # add func for this / is doesn't exist create it and save first fow as name,email,password
+    path = './' + filename
+    isExist = os.path.exists(path)
+    print(isExist)
+
+    # get_arg()
 
 
 # Get user input from command line arguments
@@ -68,7 +75,31 @@ def get_arg():
             case '-l' | '--list':
                 listPW()
             case '-g' | '--generate':
-                genPW(int(argv[2]), argv[3], argv[4])
+                pwLen = 16
+                case = 'r'
+                useSymbols = 'y'
+
+                try:
+                    if argv[2] != None and int(argv[2]) > 0:
+                        pwLen = argv[2]
+
+                    match argv[3]:
+                        case '-u' | '--uppercase':
+                            case = 'u'
+                        case '-l' | '--lowercase':
+                            case = 'l'
+                        case _:
+                            case = 'r'
+
+                    match argv[4]:
+                        case '-s' | '--no-symbols':
+                            useSymbols = 'n'
+                        case _:
+                            useSymbols = 'y'
+                except IndexError:
+                    pass
+
+                genPW(int(pwLen), case, useSymbols)
             case '-h' | '--help':
                 exit(Message.help)
             case _:
@@ -114,6 +145,8 @@ def run():
                             pass
 
                     genPW(pwLen, case, use_symbols)
+                case 'q' | 'quit':
+                    exit()
                 case _:
                     print(f'{Color.FAIL}Wrong Option.{Color.ENDC}\n')
                     pass
@@ -139,19 +172,22 @@ def newPW(name, email, password):
 
 # Edit a password in the vault using the name associated with it
 def editPW(name, email, password):
-    with open(filename, newline='') as file:
-        reader = csv.reader(file)
+    with open(filename, newline='') as rFile, open(filename, 'a', newline='') as wFile:
+        reader = csv.reader(rFile)
+        writer = csv.writer(wFile)
         try:
             for row in reader:
+
                 if row[0] == name:
                     row[1] = row[1].replace(row[1], email)
                     row[2] = row[2].replace(row[2], password)
 
-                    print(row[0], '\n', row[1], '\n', row[2], '\n', row)
-                    # with open(filename, 'a', newline='') as file:
-                    #     writer = csv.writer(file)
-                    #     writer.writerow(row)
-                    #     time.sleep(1)
+                    file = pd.read_csv(filename)
+                    file.drop(file.index[(file["name"] == name)], axis=0, inplace=True)
+                    file.to_csv(filename, index=False)
+
+                    writer.writerow(row)
+
         except csv.Error as e:
             exit('file {}, line {}: {}'.format(filename, reader.line_num, e))
         except (EOFError, KeyboardInterrupt):
@@ -194,7 +230,7 @@ def listPW():
 
 
 # Password generator, user can deferment the length, lower or upper or random case, and to use special characters (symbols) or not
-def genPW(pwLen, case='r', useSymbol='y'):
+def genPW(pwLen, case='r', useSymbols='y'):
     letters = string.ascii_letters
     upper_letters = string.ascii_uppercase
     lower_letters = string.ascii_lowercase
@@ -204,7 +240,7 @@ def genPW(pwLen, case='r', useSymbol='y'):
     alpha = ''
     pw = ''
 
-    if pwLen != None:
+    if pwLen != None and pwLen > 0:
         pw_length = pwLen
     else:
         pw_length = 16
@@ -217,11 +253,11 @@ def genPW(pwLen, case='r', useSymbol='y'):
         case _:
             alpha = letters + digits
 
-    match useSymbol:
+    match useSymbols:
         case '-s' | '--symbols' | 'y':
             alpha = alpha + special_chars
 
-    for i in range(pw_length):
+    for _ in range(pw_length):
         pw += ''.join(secrets.choice(alpha))
 
     print(f'\n{Color.OKGREEN}{pw}{Color.ENDC}\n')
