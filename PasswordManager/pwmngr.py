@@ -65,7 +65,7 @@ kdf = PBKDF2HMAC(
     length=32,
     salt=salt,
     iterations=100000,
-    backend=default_backend()
+    backend=default_backend(),
 )
 key = base64.urlsafe_b64encode(kdf.derive(secret))
 
@@ -212,6 +212,7 @@ def encrypt(str):
     str = str.encode()
     return (f.encrypt(str)).decode()
 
+
 # decryption function
 def decrypt(str):
     str = str.encode()
@@ -336,7 +337,7 @@ def genPW(pwLen, case='r', useSymbols='y'):
     for _ in range(pw_length):
         pw += ''.join(secrets.choice(alpha))
 
-    print(f'\n{Color.OKGREEN}{pw}{Color.ENDC}\n')
+    print(f'\n{Color.OKGREEN}{pw}{Color.ENDC}')
 
 
 if __name__ == '__main__':
