@@ -90,26 +90,258 @@ Note: These libraries can be used in a wide variety of ways. I mentioned just wh
 - **csv**: reading and writing from and to CSV files.
 
 
-<!--
+
+
+
+
+
+
+
+
 ## Documentation:
 
-### project.py Functions (excluding main)
+### *project.py* Functions (excluding main):
 
-```
+#### Function:
 
-```
+***check_file()***
 
 #### Description:
 
-* 
+- 
 
-#### Args:
+#### Arguments:
 
-*
+- 
+
+#### Side effects:
+
+- 
 
 #### Returns:
 
-* -->
+- 
+
+
+#### Function:
+
+***encrypt()***
+
+#### Description:
+
+- 
+
+#### Arguments:
+
+- 
+
+#### Side effects:
+
+- 
+
+#### Returns:
+
+- 
+
+
+#### Function:
+
+***decrypt()***
+
+#### Description:
+
+- 
+
+#### Arguments:
+
+- 
+
+#### Side effects:
+
+- 
+
+#### Returns:
+
+- 
+
+
+#### Function:
+
+***get_arg()***
+
+#### Description:
+
+- 
+
+#### Arguments:
+
+- 
+
+#### Side effects:
+
+- 
+
+#### Returns:
+
+- 
+
+
+#### Function:
+
+***run()***
+
+#### Description:
+
+- 
+
+#### Arguments:
+
+- 
+
+#### Side effects:
+
+- 
+
+#### Returns:
+
+- 
+
+
+#### Function:
+
+***newPW()***
+
+#### Description:
+
+- 
+
+#### Arguments:
+
+- 
+
+#### Side effects:
+
+- 
+
+#### Returns:
+
+- 
+
+
+#### Function:
+
+***editPW()***
+
+#### Description:
+
+- 
+
+#### Arguments:
+
+- 
+
+#### Side effects:
+
+- 
+
+#### Returns:
+
+- 
+
+
+#### Function:
+
+***delPW()***
+
+#### Description:
+
+- 
+
+#### Arguments:
+
+- 
+
+#### Side effects:
+
+- 
+
+#### Returns:
+
+- 
+
+
+#### Function:
+
+***findPW()***
+
+#### Description:
+
+- 
+
+#### Arguments:
+
+- 
+
+#### Side effects:
+
+- 
+
+#### Returns:
+
+- 
+
+
+#### Function:
+
+***listPW()***
+
+#### Description:
+
+- 
+
+#### Arguments:
+
+- 
+
+#### Side effects:
+
+- 
+
+#### Returns:
+
+- 
+
+
+#### Function:
+
+***genPW()***
+
+#### Description:
+
+- 
+
+#### Arguments:
+
+- 
+
+#### Side effects:
+
+- 
+
+#### Returns:
+
+- 
+
+
+
+### *test_project.py* Functions:
+
+Each function in `project.py` has its own test function in `test_project.py` to test it in a variety of ways and scenarios to make sure it's working the way it's intended to be used, and in case anything goes wrong in terms of usage by the user. It's also capable of catching it and taking the proper action.
+
+
+
+
+
 
 
 
