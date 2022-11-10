@@ -26,13 +26,13 @@ git clone https://github.com/yousafesaeed/python-scripts.git && cd python-script
 
 Install the dependencies:
 
-Note: `pytest` is optional if you don't care about tests.
-
 ```
 pip install -r requirements.txt
 ```
 
 or
+
+Note: `pytest` is optional if you don't care about tests.
 
 ```
 pip install cryptography pandas pytest
@@ -90,42 +90,36 @@ Note: These libraries can be used in a wide variety of ways. I mentioned just wh
 - **csv**: reading and writing from and to CSV files.
 
 
-
-
-
-
-
-
-
-
 ## Documentation:
 
 ### *project.py* Functions (excluding main):
 
 #### Function:
 
-***check_file()***
+```check_file()```
 
 #### Description:
 
-- 
+- Checks to see if vault.csv exists; if not, it is created and the first record is saved as (**name**,**email**,**password**).
 
 #### Arguments:
 
-- 
+- Doesn't take any arguments.
 
 #### Side effects:
 
-- 
+- Creates vault.csv and saves the first record as (**name**,**email**,**password**).
 
 #### Returns:
 
-- 
+- Doesn't return any value.
 
 
 #### Function:
 
-***encrypt()***
+```
+encrypt()
+```
 
 #### Description:
 
