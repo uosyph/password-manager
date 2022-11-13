@@ -1,18 +1,18 @@
 # Password Manager
 
-## Video Demo: [https://youtu.be/](https://youtu.be/)
-
 ## Description:
 
 A password manager that lets the user store, edit, delete, find, and list the passwords they have.
 Passwords are encrypted before being saved to a CSV file and decrypted before being displayed to the user.
 Users can generate a random password and determine its length, whether to use symbols or not, and whether to use uppercase, lowercase, or mixed-case.
 
+### Video Demo: [https://youtu.be/0_npze53r4k](https://youtu.be/0_npze53r4k)
+
 ---
 
 ## Directory Contents:
-- **project.py**: This is the file which contains The `main` function and the other functions and classes necessary to implement the App.
-- **test_project.py**: This file contains the test functions for `project.py`.
+- **pmngr.py**: This is the file which contains The `main` function and the other functions and classes necessary to implement the App.
+- **test_pmngr.py**: This file contains the test functions for `pmngr.py`.
 - **requirements.txt**: All `pip`-installable libraries that are used in the project are listed here.
 
 
@@ -92,7 +92,7 @@ Note: These libraries can be used in a wide variety of ways. I mentioned just wh
 
 ## Documentation:
 
-### *project.py* Functions (excluding main):
+### *pmngr.py* Functions (excluding main):
 
 #### Function:
 
@@ -360,30 +360,7 @@ genPW()
 - Doesn't return any value.
 
 
-### *test_project.py* Functions:
+### *test_pmngr.py* Functions:
 
-Each function in `project.py` has its own test function in `test_project.py` to test it in a variety of ways and scenarios to make sure it's working the way it's intended to be used, and in case anything goes wrong in terms of usage by the user. It's also capable of catching it and taking the proper action.
+Each function in `pmngr.py` has its own test function in `test_pmngr.py` to test it in a variety of ways and scenarios to make sure it's working the way it's intended to be used, and in case anything goes wrong in terms of usage by the user. It's also capable of catching it and taking the proper action.
 
-
-
-
-
-
-
-
-
-
-<!--
-    title: CS50P Final Project - Password Manager
-    desc:  My final project for Harvard's CS50P - Password Manager
-
-    A password manager that lets the user store, edit, delete, find, and list the passwords they have.
-    Passwords are encrypted before being saved to a CSV file and decrypted before being displayed to the user.
-    Users can generate a random password and determine its length, whether to use symbols or not, and whether to use uppercase, lowercase, or mixed case.
-
-    Project details and source code: https://github.com/yousafesaeed/python-scripts/tree/main/PasswordManager 
-    Timestamps: 
-    Intro - 00:00
-    
-    Tests - 00:00
--->

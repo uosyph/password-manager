@@ -3,7 +3,7 @@ import os
 import csv
 import io
 import sys
-from pwmngr import (
+from pmngr import (
     check_file,
     get_arg,
     run,
