@@ -6,8 +6,6 @@ A password manager that lets the user store, edit, delete, find, and list the pa
 Passwords are encrypted before being saved to a CSV file and decrypted before being displayed to the user.
 Users can generate a random password and determine its length, whether to use symbols or not, and whether to use uppercase, lowercase, or mixed-case.
 
-### Video Demo: [https://youtu.be/0_npze53r4k](https://youtu.be/0_npze53r4k)
-
 ---
 
 ## Directory Contents:
@@ -21,7 +19,7 @@ Users can generate a random password and determine its length, whether to use sy
 
 Get the app:
 ```
-git clone https://github.com/yousafesaeed/python-scripts.git && cd python-scripts/PasswordManager/
+git clone https://github.com/uosyph/password-manager.git && cd password-manager
 ```
 
 Install the dependencies:
